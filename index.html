@@ -24,6 +24,7 @@
             align-items: center;
         }
 
+        /* Main poster card */
         .poster-card {
             max-width: 1320px;
             width: 100%;
@@ -59,6 +60,8 @@
             display: flex;
             flex-wrap: wrap;
         }
+
+        /* LEFT PANEL */
         .controls-area {
             flex: 1.1;
             min-width: 290px;
@@ -69,6 +72,8 @@
             flex-direction: column;
             gap: 28px;
         }
+
+        /* RIGHT PANEL (poster preview) */
         .preview-area {
             flex: 1.2;
             background: #fef9f0;
@@ -106,6 +111,7 @@
             box-shadow: 0 0 0 3px rgba(247,179,43,0.2);
         }
 
+        /* upload section (appears after name) */
         .upload-section {
             transition: all 0.2s ease;
             background: #fef5e9;
@@ -136,58 +142,109 @@
             display: none;
         }
 
-        .cropper-card {
-            background: #ffffffea;
-            border-radius: 32px;
-            padding: 18px;
-            border: 1px solid #ffd89a;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
-            margin-top: 4px;
-        }
-        .cropper-title {
-            font-weight: 700;
-            margin-bottom: 12px;
-            color: #bf721a;
-            font-size: 0.9rem;
-            display: flex;
+        /* MODAL (NEW PAGE STYLE BOX) - പ്രത്യേക ബോക്സിൽ ക്രോപ്പ് ടൂൾ */
+        .crop-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(6px);
+            z-index: 2000;
+            justify-content: center;
             align-items: center;
-            gap: 6px;
+            animation: fadeIn 0.25s ease;
         }
-        #cropImageContainer img {
-            max-width: 100%;
-            display: block;
-            border-radius: 24px;
-        }
-        .btn-group-crop {
+        .crop-modal.active {
             display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-top: 16px;
         }
-        .btn {
-            border: none;
-            background: #2f4d70;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 60px;
-            font-weight: 600;
+        .modal-box {
+            background: #fffef5;
+            border-radius: 48px;
+            width: 90%;
+            max-width: 750px;
+            padding: 20px 20px 28px;
+            box-shadow: 0 30px 45px rgba(0, 0, 0, 0.5);
+            border: 1px solid #ffdfaa;
+            transition: transform 0.2s;
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding: 0 8px 12px 16px;
+            border-bottom: 2px solid #ffe1b3;
+        }
+        .modal-header h3 {
+            font-size: 1.7rem;
+            font-weight: 800;
+            background: linear-gradient(145deg, #cc7b2a, #e69c2e);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .modal-close {
+            font-size: 2rem;
             cursor: pointer;
+            background: none;
+            border: none;
+            font-weight: 600;
+            color: #b97f3a;
             transition: 0.2s;
         }
-        .btn-primary {
-            background: #f7b32b;
-            color: #2c2e3a;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        .modal-close:hover {
+            color: #c0392b;
+            transform: scale(1.1);
         }
-        .btn-primary:hover {
+        .crop-container {
+            margin: 20px 0;
+            background: #ece1cf;
+            border-radius: 32px;
+            overflow: hidden;
+            max-height: 55vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .crop-container img {
+            max-width: 100%;
+            display: block;
+        }
+        .modal-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 16px;
+            margin-top: 18px;
+        }
+        .btn-crop-save {
+            background: #f7b32b;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 60px;
+            font-weight: 800;
+            font-size: 1rem;
+            color: #2c2e3a;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .btn-crop-save:hover {
             background: #e09d1a;
             transform: translateY(-2px);
         }
-        .btn-outline {
-            background: #e9e2d4;
+        .btn-cancel-crop {
+            background: #e2d4c0;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 60px;
+            font-weight: 700;
             color: #5a3e1f;
+            cursor: pointer;
         }
 
+        /* poster canvas & download */
         .canvas-wrapper {
             background: #fff7e8;
             border-radius: 32px;
@@ -239,6 +296,10 @@
         .hidden {
             display: none;
         }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
         @media (max-width: 780px) {
             .controls-area {
                 border-right: none;
@@ -247,10 +308,18 @@
             .hero-header h1 {
                 font-size: 1.5rem;
             }
+            .modal-box {
+                width: 95%;
+                padding: 16px;
+            }
+            .modal-header h3 {
+                font-size: 1.3rem;
+            }
         }
     </style>
 </head>
 <body>
+
 <div class="poster-card">
     <div class="hero-header">
         <h1>G.U.P.S പഴയകടയ്‌ക്കൽ</h1>
@@ -258,38 +327,30 @@
     </div>
 
     <div class="flex-studio">
-        <!-- LEFT PANEL: name + photo upload (conditional) + cropper -->
+        <!-- LEFT PANEL : Name + photo upload trigger -->
         <div class="controls-area">
             <div class="input-block">
                 <label>📝 നിങ്ങളുടെ പേര്</label>
-                <input type="text" id="studentName" placeholder="ഉദാ: ഫാത്തിമ കെ/FATHIMA K" autocomplete="off">
+                <input type="text" id="studentName" placeholder="ഉദാ: ഫാത്തിമ കെ / FATHIMA K" autocomplete="off">
+                <div class="info-note" style="font-size:0.7rem; color:#b5762a;">* പേര് നൽകിയ ശേഷം ഫോട്ടോ അപ്ലോഡ് ചെയ്യാം</div>
             </div>
 
-            <!-- Photo upload section (hidden until name is typed) -->
+            <!-- Photo upload section (initially hidden until name has value) -->
             <div id="photoUploadWrapper" class="upload-section hidden">
                 <div class="input-block">
-                    <label>📸 ഫോട്ടോ അപ്ലോഡ്</label>
-                    <div class="file-label" onclick="document.getElementById('photoInput').click()">
+                    <label>📸 ഫോട്ടോ അപ്ലോഡ് </label>
+                    <div class="file-label" id="triggerFileSelect">
                         🖼️ ഫോട്ടോ തിരഞ്ഞെടുക്കുക
                     </div>
                     <input type="file" id="photoInput" accept="image/jpeg, image/png, image/jpg">
                 </div>
-            </div>
-
-            <!-- Cropper panel (appears after image selection) -->
-            <div id="cropperPanel" class="cropper-card hidden">
-                <div class="cropper-title">✂️ ഫോട്ടോ ക്രോപ്പ് ചെയ്യുക</div>
-                <div id="cropImageContainer" style="background:#f5ede1; border-radius: 24px; overflow: hidden;">
-                    <img id="cropPreviewImg" style="display: block; max-width: 100%; width: 100%;">
-                </div>
-                <div class="btn-group-crop">
-                    <button id="applyCropBtn" class="btn btn-primary">✔️ ക്രോപ്പ് & സേവ് ചെയ്യുക</button>
-                    <button id="cancelCropBtn" class="btn btn-outline">❌ ഒഴിവാക്കുക</button>
+                <div style="font-size:0.7rem; color:#b87c30; margin-top:8px; text-align:center;">
+                    ✨ ആവശ്യാനുസരണം ഫോട്ടോ ക്രോപ്പ് ചെയ്യാവുന്നതാണ്.
                 </div>
             </div>
         </div>
 
-        <!-- RIGHT PANEL: poster preview + download + footer below button -->
+        <!-- RIGHT PANEL : Poster preview and download -->
         <div class="preview-area">
             <div class="canvas-wrapper">
                 <canvas id="posterCanvas" width="1200" height="1500" style="width:100%; height:auto; max-width:450px; border-radius: 24px;"></canvas>
@@ -300,272 +361,354 @@
     </div>
 </div>
 
+<!-- MODAL : CROP TOOL - പുതിയ പേജ് പോലെ പ്രത്യേക ബോക്സ് -->
+<div id="cropModal" class="crop-modal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3>✂️ ഫോട്ടോ ക്രോപ്പ് ചെയ്യുക</h3>
+            <button class="modal-close" id="closeModalBtn">&times;</button>
+        </div>
+        <div class="crop-container" id="cropImageContainer">
+            <img id="modalCropImage" style="max-width:100%; display:block;">
+        </div>
+        <div class="modal-buttons">
+            <button id="modalCancelBtn" class="btn-cancel-crop">❌ റദ്ദാക്കുക</button>
+            <button id="modalCropSaveBtn" class="btn-crop-save">✔️ ക്രോപ്പ് & സേവ് ചെയ്യുക</button>
+        </div>
+    </div>
+</div>
+
 <script>
-    // ---------- Poster Generation Logic ----------
-    // 1. Name input reveals photo upload option.
-    // 2. Upload photo → mandatory square crop before use.
-    // 3. Poster contains: background + cropped photo (right side, 420px) + name below photo (white, centered, no underline)
-    // 4. No extra text, info boxes removed. Footer placed below download button.
-    
-    const nameInput = document.getElementById('studentName');
-    const photoUploadWrapper = document.getElementById('photoUploadWrapper');
-    const photoFileInput = document.getElementById('photoInput');
-    const cropperPanel = document.getElementById('cropperPanel');
-    const cropImageElem = document.getElementById('cropPreviewImg');
-    const applyCropBtn = document.getElementById('applyCropBtn');
-    const cancelCropBtn = document.getElementById('cancelCropBtn');
-    const posterCanvas = document.getElementById('posterCanvas');
-    const ctx = posterCanvas.getContext('2d');
-    const downloadBtn = document.getElementById('downloadPosterBtn');
-    
-    let cropperInstance = null;
-    let currentCroppedImage = null;      // final image after crop
-    let backgroundImage = new Image();
-    let bgReady = false;
-    
-    // Poster dimensions & layout
-    const PHOTO_SIZE = 420;
-    const RIGHT_MARGIN = 80;
-    const photoX = posterCanvas.width - PHOTO_SIZE - RIGHT_MARGIN; // 700
-    const PHOTO_Y = 470;
-    const NAME_GAP_BELOW_PHOTO = 70;
-    const nameCenterX = photoX + PHOTO_SIZE / 2;
-    const nameBaseY = PHOTO_Y + PHOTO_SIZE + NAME_GAP_BELOW_PHOTO;
-    
-    const BG_IMAGE_URL = 'https://i.ibb.co/yngL3kyS/KERALA.jpg';
-    
-    // Helper: rounded rectangle
-    function roundedRect(ctx, x, y, w, h, r) {
-        if (w < 2 * r) r = w / 2;
-        if (h < 2 * r) r = h / 2;
-        ctx.moveTo(x + r, y);
-        ctx.lineTo(x + w - r, y);
-        ctx.quadraticCurveTo(x + w, y, x + w, y + r);
-        ctx.lineTo(x + w, y + h - r);
-        ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
-        ctx.lineTo(x + r, y + h);
-        ctx.quadraticCurveTo(x, y + h, x, y + h - r);
-        ctx.lineTo(x, y + r);
-        ctx.quadraticCurveTo(x, y, x + r, y);
-        ctx.closePath();
-    }
-    
-    // Draw full poster: background + photo + name
-    function drawFullPoster() {
-        if (!ctx) return;
-        const w = posterCanvas.width;
-        const h = posterCanvas.height;
+    (function() {
+        // ----- DOM elements -----
+        const nameInput = document.getElementById('studentName');
+        const photoUploadWrapper = document.getElementById('photoUploadWrapper');
+        const photoFileInput = document.getElementById('photoInput');
+        const triggerFileSelect = document.getElementById('triggerFileSelect');
         
-        // 1. Background
-        if (bgReady && backgroundImage.complete && backgroundImage.naturalWidth > 0) {
-            ctx.drawImage(backgroundImage, 0, 0, w, h);
-        } else {
-            const grad = ctx.createLinearGradient(0, 0, w, h);
-            grad.addColorStop(0, '#1d5b85');
-            grad.addColorStop(0.6, '#f5b042');
-            ctx.fillStyle = grad;
-            ctx.fillRect(0, 0, w, h);
+        // Modal & cropper related
+        const cropModal = document.getElementById('cropModal');
+        const modalCropImg = document.getElementById('modalCropImage');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const modalCancelBtn = document.getElementById('modalCancelBtn');
+        const modalCropSaveBtn = document.getElementById('modalCropSaveBtn');
+        
+        const posterCanvas = document.getElementById('posterCanvas');
+        const ctx = posterCanvas.getContext('2d');
+        const downloadBtn = document.getElementById('downloadPosterBtn');
+        
+        // state variables
+        let cropperInstance = null;
+        let currentCroppedImage = null;      // final image object after crop & save
+        let backgroundImage = new Image();
+        let bgReady = false;
+        let currentSelectedFile = null;
+        
+        // Poster constants
+        const PHOTO_SIZE = 420;
+        const RIGHT_MARGIN = 80;
+        const photoX = posterCanvas.width - PHOTO_SIZE - RIGHT_MARGIN; // 1200-420-80=700
+        const PHOTO_Y = 470;
+        const NAME_GAP_BELOW_PHOTO = 70;
+        const nameCenterX = photoX + PHOTO_SIZE / 2;
+        const nameBaseY = PHOTO_Y + PHOTO_SIZE + NAME_GAP_BELOW_PHOTO;
+        const BG_IMAGE_URL = 'https://i.ibb.co/yngL3kyS/KERALA.jpg';
+        
+        // helper: rounded rect for photo frame
+        function roundedRect(ctx, x, y, w, h, r) {
+            if (w < 2 * r) r = w / 2;
+            if (h < 2 * r) r = h / 2;
+            ctx.moveTo(x + r, y);
+            ctx.lineTo(x + w - r, y);
+            ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+            ctx.lineTo(x + w, y + h - r);
+            ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+            ctx.lineTo(x + r, y + h);
+            ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+            ctx.lineTo(x, y + r);
+            ctx.quadraticCurveTo(x, y, x + r, y);
+            ctx.closePath();
         }
         
-        // 2. Right side photo (rounded corners, border)
-        const radius = 44;
-        if (currentCroppedImage && currentCroppedImage.complete && currentCroppedImage.naturalWidth) {
-            ctx.save();
-            ctx.beginPath();
-            roundedRect(ctx, photoX, PHOTO_Y, PHOTO_SIZE, PHOTO_SIZE, radius);
-            ctx.clip();
-            ctx.drawImage(currentCroppedImage, photoX, PHOTO_Y, PHOTO_SIZE, PHOTO_SIZE);
-            ctx.restore();
+        // draw poster with background, cropped photo and name
+        function drawFullPoster() {
+            if (!ctx) return;
+            const w = posterCanvas.width;
+            const h = posterCanvas.height;
             
-            // double border
-            ctx.beginPath();
-            roundedRect(ctx, photoX, PHOTO_Y, PHOTO_SIZE, PHOTO_SIZE, radius);
-            ctx.lineWidth = 4;
-            ctx.strokeStyle = "#F7C873";
-            ctx.stroke();
-            ctx.beginPath();
-            roundedRect(ctx, photoX+2, PHOTO_Y+2, PHOTO_SIZE-4, PHOTO_SIZE-4, radius-2);
-            ctx.lineWidth = 2.5;
-            ctx.strokeStyle = "#FFF9E6";
-            ctx.stroke();
-        } else {
-            // placeholder (empty frame with subtle icon)
-            ctx.fillStyle = "rgba(250, 240, 210, 0.9)";
-            ctx.beginPath();
-            roundedRect(ctx, photoX, PHOTO_Y, PHOTO_SIZE, PHOTO_SIZE, radius);
-            ctx.fill();
-            ctx.fillStyle = "#b57c34";
-            ctx.font = "68px 'Anek Malayalam'";
+            // draw background image or gradient fallback
+            if (bgReady && backgroundImage.complete && backgroundImage.naturalWidth > 0) {
+                ctx.drawImage(backgroundImage, 0, 0, w, h);
+            } else {
+                const grad = ctx.createLinearGradient(0, 0, w, h);
+                grad.addColorStop(0, '#1d5b85');
+                grad.addColorStop(0.6, '#f5b042');
+                ctx.fillStyle = grad;
+                ctx.fillRect(0, 0, w, h);
+            }
+            
+            const radius = 44;
+            // Draw photo (if available)
+            if (currentCroppedImage && currentCroppedImage.complete && currentCroppedImage.naturalWidth) {
+                ctx.save();
+                ctx.beginPath();
+                roundedRect(ctx, photoX, PHOTO_Y, PHOTO_SIZE, PHOTO_SIZE, radius);
+                ctx.clip();
+                ctx.drawImage(currentCroppedImage, photoX, PHOTO_Y, PHOTO_SIZE, PHOTO_SIZE);
+                ctx.restore();
+                
+                // elegant double border
+                ctx.beginPath();
+                roundedRect(ctx, photoX, PHOTO_Y, PHOTO_SIZE, PHOTO_SIZE, radius);
+                ctx.lineWidth = 4;
+                ctx.strokeStyle = "#F7C873";
+                ctx.stroke();
+                ctx.beginPath();
+                roundedRect(ctx, photoX+2, PHOTO_Y+2, PHOTO_SIZE-4, PHOTO_SIZE-4, radius-2);
+                ctx.lineWidth = 2.5;
+                ctx.strokeStyle = "#FFF9E6";
+                ctx.stroke();
+            } else {
+                // placeholder: empty frame with camera icon
+                ctx.fillStyle = "rgba(250, 240, 210, 0.9)";
+                ctx.beginPath();
+                roundedRect(ctx, photoX, PHOTO_Y, PHOTO_SIZE, PHOTO_SIZE, radius);
+                ctx.fill();
+                ctx.fillStyle = "#b57c34";
+                ctx.font = "68px 'Anek Malayalam'";
+                ctx.textAlign = "center";
+                ctx.fillText("📷", photoX + PHOTO_SIZE/2, PHOTO_Y + PHOTO_SIZE/2 + 8);
+                ctx.textAlign = "left";
+                ctx.beginPath();
+                roundedRect(ctx, photoX, PHOTO_Y, PHOTO_SIZE, PHOTO_SIZE, radius);
+                ctx.strokeStyle = "#e5bf86";
+                ctx.lineWidth = 3;
+                ctx.stroke();
+            }
+            
+            // draw name below photo (white, centered, dynamic sizing)
+            let studentName = nameInput.value.trim();
+            if (studentName === "") {
+                studentName = "__________";
+            }
+            let maxNameWidth = PHOTO_SIZE + 70;
+            let fontSize = 54;
+            ctx.font = `bold ${fontSize}px 'Anek Malayalam'`;
+            let textWidth = ctx.measureText(studentName).width;
+            while (textWidth > maxNameWidth && fontSize > 28) {
+                fontSize -= 4;
+                ctx.font = `bold ${fontSize}px 'Anek Malayalam'`;
+                textWidth = ctx.measureText(studentName).width;
+            }
+            ctx.save();
+            ctx.shadowColor = "rgba(0, 0, 0, 0.65)";
+            ctx.shadowBlur = 8;
+            ctx.shadowOffsetX = 2;
+            ctx.shadowOffsetY = 2;
+            ctx.fillStyle = "#FFFFFF";
             ctx.textAlign = "center";
-            ctx.fillText("📷", photoX + PHOTO_SIZE/2, PHOTO_Y + PHOTO_SIZE/2 + 8);
-            ctx.textAlign = "left";
-            ctx.beginPath();
-            roundedRect(ctx, photoX, PHOTO_Y, PHOTO_SIZE, PHOTO_SIZE, radius);
-            ctx.strokeStyle = "#e5bf86";
-            ctx.lineWidth = 3;
-            ctx.stroke();
+            ctx.font = `bold ${fontSize}px 'Anek Malayalam'`;
+            ctx.fillText(studentName, nameCenterX, nameBaseY);
+            ctx.restore();
         }
         
-        // 3. Name below photo (white, centered, dynamic size)
-        let studentName = nameInput.value.trim();
-        if (studentName === "") {
-            studentName = "__________";
+        // set cropped image from canvas dataURL
+        function setCroppedImageFromCanvas(canvasElement) {
+            const img = new Image();
+            img.onload = () => {
+                currentCroppedImage = img;
+                drawFullPoster();
+            };
+            img.src = canvasElement.toDataURL('image/png');
         }
-        let maxNameWidth = PHOTO_SIZE + 70;
-        let fontSize = 54;
-        ctx.font = `bold ${fontSize}px 'Anek Malayalam'`;
-        let textWidth = ctx.measureText(studentName).width;
-        while (textWidth > maxNameWidth && fontSize > 28) {
-            fontSize -= 4;
-            ctx.font = `bold ${fontSize}px 'Anek Malayalam'`;
-            textWidth = ctx.measureText(studentName).width;
-        }
-        ctx.save();
-        ctx.shadowColor = "rgba(0, 0, 0, 0.65)";
-        ctx.shadowBlur = 8;
-        ctx.shadowOffsetX = 2;
-        ctx.shadowOffsetY = 2;
-        ctx.fillStyle = "#FFFFFF";
-        ctx.textAlign = "center";
-        ctx.font = `bold ${fontSize}px 'Anek Malayalam'`;
-        ctx.fillText(studentName, nameCenterX, nameBaseY);
-        ctx.restore();
-    }
-    
-    // Set cropped image from dataURL
-    function setCroppedImageFromDataURL(dataURL) {
-        const img = new Image();
-        img.onload = () => {
-            currentCroppedImage = img;
-            drawFullPoster();
-        };
-        img.src = dataURL;
-    }
-    
-    // Destroy cropper and hide panel
-    function destroyCropperAndReset() {
-        if (cropperInstance) {
-            cropperInstance.destroy();
-            cropperInstance = null;
-        }
-        cropperPanel.classList.add('hidden');
-        cropImageElem.src = "";
-        photoFileInput.value = "";
-    }
-    
-    // Handle file selection: show cropper
-    photoFileInput.addEventListener('change', (event) => {
-        const file = event.target.files[0];
-        if (!file) return;
-        if (!file.type.startsWith('image/')) {
-            alert("ദയവായി ഒരു ചിത്രം തിരഞ്ഞെടുക്കുക");
-            photoFileInput.value = "";
-            return;
-        }
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            cropImageElem.src = e.target.result;
-            cropperPanel.classList.remove('hidden');
-            if (cropperInstance) cropperInstance.destroy();
-            cropperInstance = new Cropper(cropImageElem, {
-                aspectRatio: 1,
-                viewMode: 2,
-                dragMode: 'move',
-                autoCropArea: 0.9,
-                cropBoxMovable: true,
-                cropBoxResizable: true,
-                zoomable: true,
-                background: true,
-                responsive: true,
-            });
-        };
-        reader.readAsDataURL(file);
-    });
-    
-    // Apply crop and update poster
-    applyCropBtn.addEventListener('click', () => {
-        if (!cropperInstance) {
-            alert("ക്രോപ്പ് ടൂൾ ലഭ്യമല്ല, വീണ്ടും ഫോട്ടോ തിരഞ്ഞെടുക്കുക");
-            return;
-        }
-        const croppedCanvas = cropperInstance.getCroppedCanvas({ width: 800, height: 800 });
-        if (!croppedCanvas) {
-            alert("ക്രോപ്പ് ചെയ്യാൻ കഴിഞ്ഞില്ല");
-            return;
-        }
-        const croppedDataURL = croppedCanvas.toDataURL('image/png');
-        setCroppedImageFromDataURL(croppedDataURL);
-        destroyCropperAndReset();
-    });
-    
-    // Cancel crop
-    cancelCropBtn.addEventListener('click', () => {
-        destroyCropperAndReset();
-    });
-    
-    // Name input handler: show/hide photo upload + redraw poster
-    function handleNameChange() {
-        const nameExists = nameInput.value.trim().length > 0;
-        if (nameExists) {
-            if (photoUploadWrapper.classList.contains('hidden')) {
-                photoUploadWrapper.classList.remove('hidden');
+        
+        // destroy cropper and close modal
+        function closeCropModal(resetFileInput = true) {
+            if (cropperInstance) {
+                cropperInstance.destroy();
+                cropperInstance = null;
             }
-        } else {
-            if (!photoUploadWrapper.classList.contains('hidden')) {
-                photoUploadWrapper.classList.add('hidden');
-                if (cropperPanel && !cropperPanel.classList.contains('hidden')) {
-                    destroyCropperAndReset();
+            cropModal.classList.remove('active');
+            if (resetFileInput) {
+                photoFileInput.value = '';
+            }
+            // clear modal image src to avoid flicker
+            modalCropImg.src = '';
+        }
+        
+        // open modal with image file, init cropper
+        function openCropModalWithFile(file) {
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                modalCropImg.src = e.target.result;
+                // ensure modal is visible before cropper init
+                cropModal.classList.add('active');
+                // wait for image load
+                modalCropImg.onload = () => {
+                    if (cropperInstance) {
+                        cropperInstance.destroy();
+                    }
+                    cropperInstance = new Cropper(modalCropImg, {
+                        aspectRatio: 1,
+                        viewMode: 2,
+                        dragMode: 'move',
+                        autoCropArea: 0.9,
+                        cropBoxMovable: true,
+                        cropBoxResizable: true,
+                        zoomable: true,
+                        background: true,
+                        responsive: true,
+                        center: true,
+                    });
+                };
+                if (modalCropImg.complete) {
+                    modalCropImg.onload();
                 }
+            };
+            reader.readAsDataURL(file);
+        }
+        
+        // handle file selection: open modal crop box (new page style)
+        function onPhotoSelected(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            if (!file.type.startsWith('image/')) {
+                alert("ദയവായി ഒരു ചിത്രം തിരഞ്ഞെടുക്കുക (JPEG/PNG)");
+                photoFileInput.value = '';
+                return;
+            }
+            currentSelectedFile = file;
+            openCropModalWithFile(file);
+        }
+        
+        // crop & save logic: get cropped canvas and update poster
+        function saveCroppedImage() {
+            if (!cropperInstance) {
+                alert("ക്രോപ്പ് ടൂൾ പ്രവർത്തന സജ്ജമല്ല, വീണ്ടും ശ്രമിക്കുക");
+                closeCropModal(true);
+                return;
+            }
+            const croppedCanvas = cropperInstance.getCroppedCanvas({ width: 800, height: 800 });
+            if (!croppedCanvas) {
+                alert("ക്രോപ്പ് ചെയ്യുന്നതിൽ പിശക്, ദയവായി വീണ്ടും ശ്രമിക്കുക");
+                return;
+            }
+            // update final poster image
+            setCroppedImageFromCanvas(croppedCanvas);
+            // close modal and reset file input
+            closeCropModal(true);
+        }
+        
+        // cancel cropping: just close modal without saving
+        function cancelCropping() {
+            closeCropModal(true);
+        }
+        
+        // ----- Name input logic: show/hide photo upload section (only if name non-empty)
+        function toggleUploadSection() {
+            const nameValue = nameInput.value.trim();
+            if (nameValue.length > 0) {
+                if (photoUploadWrapper.classList.contains('hidden')) {
+                    photoUploadWrapper.classList.remove('hidden');
+                }
+            } else {
+                if (!photoUploadWrapper.classList.contains('hidden')) {
+                    photoUploadWrapper.classList.add('hidden');
+                }
+                // If no name, we keep poster with placeholder but don't force photo removal
+            }
+            drawFullPoster();   // update poster name text
+        }
+        
+        // also trigger when name changes
+        function onNameChange() {
+            toggleUploadSection();
+            drawFullPoster();
+        }
+        
+        // load background
+        function initBackground() {
+            backgroundImage.crossOrigin = "Anonymous";
+            backgroundImage.onload = () => {
+                bgReady = true;
+                drawFullPoster();
+            };
+            backgroundImage.onerror = () => {
+                console.warn("Background image fallback");
+                bgReady = true;
+                drawFullPoster();
+            };
+            backgroundImage.src = BG_IMAGE_URL;
+        }
+        
+        // download poster
+        function downloadPoster() {
+            const nameForFile = (nameInput.value.trim() || "poster").replace(/[^a-zA-Z0-9\u0D00-\u0D7F]/g, '_');
+            const filename = `GUPS_${nameForFile}.png`;
+            posterCanvas.toBlob((blob) => {
+                const link = document.createElement('a');
+                const url = URL.createObjectURL(blob);
+                link.href = url;
+                link.download = filename;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+            }, 'image/png');
+        }
+        
+        // ----- Event bindings ----
+        nameInput.addEventListener('input', onNameChange);
+        nameInput.addEventListener('blur', () => drawFullPoster());
+        triggerFileSelect.addEventListener('click', (e) => {
+            e.preventDefault();
+            const nameExists = nameInput.value.trim().length > 0;
+            if (!nameExists) {
+                alert("ദയവായി ആദ്യം നിങ്ങളുടെ പേര് രേഖപ്പെടുത്തുക");
+                return;
+            }
+            photoFileInput.click();
+        });
+        photoFileInput.addEventListener('change', onPhotoSelected);
+        
+        // modal buttons
+        modalCropSaveBtn.addEventListener('click', saveCroppedImage);
+        modalCancelBtn.addEventListener('click', cancelCropping);
+        closeModalBtn.addEventListener('click', cancelCropping);
+        
+        // close modal if click on overlay (optional)
+        cropModal.addEventListener('click', (e) => {
+            if (e.target === cropModal) {
+                cancelCropping();
+            }
+        });
+        
+        downloadBtn.addEventListener('click', downloadPoster);
+        
+        // additional: when we close modal by any reason, destroy cropper safely
+        window.addEventListener('resize', () => drawFullPoster());
+        
+        // initialize background and draw placeholder poster
+        initBackground();
+        // initial hide upload section & draw empty poster
+        toggleUploadSection();
+        drawFullPoster();
+        
+        // Ensure that if user re-opens modal after a cropped image exists, old cropper removed
+        // add extra reset on modal close
+        function finalCleanup() {
+            if (cropperInstance) {
+                cropperInstance.destroy();
+                cropperInstance = null;
             }
         }
-        drawFullPoster();
-    }
-    
-    nameInput.addEventListener('input', handleNameChange);
-    nameInput.addEventListener('blur', () => drawFullPoster());
-    
-    // Background image loading
-    function initBackground() {
-        backgroundImage.crossOrigin = "Anonymous";
-        backgroundImage.onload = () => {
-            bgReady = true;
-            drawFullPoster();
-        };
-        backgroundImage.onerror = () => {
-            bgReady = true;
-            drawFullPoster();
-        };
-        backgroundImage.src = BG_IMAGE_URL;
-    }
-    
-    // Download poster as PNG
-    downloadBtn.addEventListener('click', () => {
-        const nameForFile = (nameInput.value.trim() || "poster").replace(/[^a-zA-Z0-9\u0D00-\u0D7F]/g, '_');
-        const filename = `GUPS_${nameForFile}.png`;
-        posterCanvas.toBlob((blob) => {
-            const link = document.createElement('a');
-            const url = URL.createObjectURL(blob);
-            link.href = url;
-            link.download = filename;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            URL.revokeObjectURL(url);
-        }, 'image/png');
-    });
-    
-    // If user re-selects while cropper open, destroy previous
-    photoFileInput.addEventListener('click', () => {
-        if (cropperInstance && !cropperPanel.classList.contains('hidden')) {
-            destroyCropperAndReset();
-        }
-    });
-    
-    window.addEventListener('resize', () => drawFullPoster());
-    
-    initBackground();
-    drawFullPoster();
-    handleNameChange();  // ensures upload section hidden initially
+        
+        // Override close to fully destroy
+        const originalClose = closeCropModal;
+        window.closeCropModal = closeCropModal;
+        // fine
+    })();
 </script>
 </body>
 </html>
