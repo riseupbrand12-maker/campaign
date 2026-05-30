@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>GUPS PKDL | പ്രവേശനോത്സവം 2026</title>
+    <title>GUPS PKDL | പ്രവേശനോത്സവം 2026 | Black Name Poster</title>
     <link href="https://fonts.googleapis.com/css2?family=Anek+Malayalam:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/cropperjs@1.5.12/dist/cropper.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/cropperjs@1.5.12/dist/cropper.min.js"></script>
@@ -142,7 +142,7 @@
             display: none;
         }
 
-        /* MODAL (NEW PAGE STYLE BOX) - പ്രത്യേക ബോക്സിൽ ക്രോപ്പ് ടൂൾ */
+        /* MODAL (NEW PAGE STYLE BOX) - ക്രോപ്പ് ടൂൾ */
         .crop-modal {
             display: none;
             position: fixed;
@@ -431,6 +431,7 @@
         }
         
         // draw poster with background, cropped photo and name
+        // NAME PRINT IN BLACK COLOUR with crisp white shadow for readability
         function drawFullPoster() {
             if (!ctx) return;
             const w = posterCanvas.width;
@@ -486,7 +487,8 @@
                 ctx.stroke();
             }
             
-            // draw name below photo (white, centered, dynamic sizing)
+            // draw name below photo -  NAME PRINT IN BLACK COLOUR as requested
+            // Using pure black (#000000) with soft white halo/shadow for excellent visibility on any background
             let studentName = nameInput.value.trim();
             if (studentName === "") {
                 studentName = "__________";
@@ -501,14 +503,20 @@
                 textWidth = ctx.measureText(studentName).width;
             }
             ctx.save();
-            ctx.shadowColor = "rgba(0, 0, 0, 0.65)";
-            ctx.shadowBlur = 8;
-            ctx.shadowOffsetX = 2;
-            ctx.shadowOffsetY = 2;
-            ctx.fillStyle = "#FFFFFF";
+            // Strong white glow behind the black text for ultimate contrast and readability
+            ctx.shadowColor = "rgba(255, 255, 230, 0.95)";
+            ctx.shadowBlur = 5;
+            ctx.shadowOffsetX = 1;
+            ctx.shadowOffsetY = 1;
+            // Secondary subtle dark shadow for depth? Actually using white shadow gives black text a "pop" effect
+            ctx.fillStyle = "#000000";   // BLACK COLOUR as specified
             ctx.textAlign = "center";
             ctx.font = `bold ${fontSize}px 'Anek Malayalam'`;
             ctx.fillText(studentName, nameCenterX, nameBaseY);
+            
+            // Optional: extra stroke effect to ensure black text stands out even on dark regions
+            // We add a very thin white stroke behind (by drawing twice with no shadow but stroke? but white shadow already helps)
+            // For extra crispness, we re-draw the same text with no shadow but white outline? Not needed as shadow works perfectly.
             ctx.restore();
         }
         
@@ -696,7 +704,6 @@
         drawFullPoster();
         
         // Ensure that if user re-opens modal after a cropped image exists, old cropper removed
-        // add extra reset on modal close
         function finalCleanup() {
             if (cropperInstance) {
                 cropperInstance.destroy();
@@ -704,10 +711,7 @@
             }
         }
         
-        // Override close to fully destroy
-        const originalClose = closeCropModal;
-        window.closeCropModal = closeCropModal;
-        // fine
+        // Override close to fully destroy - handled
     })();
 </script>
 </body>
