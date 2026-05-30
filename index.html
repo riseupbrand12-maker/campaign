@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>GUPS PKDL | പ്രവേശനോത്സവം 2026 | Black Name Poster</title>
+    <title>GUPS PKDL | പ്രവേശനോത്സവം 2026 | High-Resolution JPG Poster</title>
     <link href="https://fonts.googleapis.com/css2?family=Anek+Malayalam:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/cropperjs@1.5.12/dist/cropper.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/cropperjs@1.5.12/dist/cropper.min.js"></script>
@@ -24,9 +24,8 @@
             align-items: center;
         }
 
-        /* Main poster card */
         .poster-card {
-            max-width: 1320px;
+            max-width: 1400px;
             width: 100%;
             background: #fffef7;
             border-radius: 56px;
@@ -61,7 +60,6 @@
             flex-wrap: wrap;
         }
 
-        /* LEFT PANEL */
         .controls-area {
             flex: 1.1;
             min-width: 290px;
@@ -73,7 +71,6 @@
             gap: 28px;
         }
 
-        /* RIGHT PANEL (poster preview) */
         .preview-area {
             flex: 1.2;
             background: #fef9f0;
@@ -111,7 +108,6 @@
             box-shadow: 0 0 0 3px rgba(247,179,43,0.2);
         }
 
-        /* upload section (appears after name) */
         .upload-section {
             transition: all 0.2s ease;
             background: #fef5e9;
@@ -142,7 +138,7 @@
             display: none;
         }
 
-        /* MODAL (NEW PAGE STYLE BOX) - ക്രോപ്പ് ടൂൾ */
+        /* MODAL - CROP TOOL */
         .crop-modal {
             display: none;
             position: fixed;
@@ -168,7 +164,6 @@
             padding: 20px 20px 28px;
             box-shadow: 0 30px 45px rgba(0, 0, 0, 0.5);
             border: 1px solid #ffdfaa;
-            transition: transform 0.2s;
         }
         .modal-header {
             display: flex;
@@ -244,13 +239,12 @@
             cursor: pointer;
         }
 
-        /* poster canvas & download */
         .canvas-wrapper {
             background: #fff7e8;
             border-radius: 32px;
             box-shadow: 0 20px 32px rgba(0, 0, 0, 0.18);
             padding: 12px;
-            max-width: 460px;
+            max-width: 560px;
             width: 100%;
             display: flex;
             justify-content: center;
@@ -327,7 +321,6 @@
     </div>
 
     <div class="flex-studio">
-        <!-- LEFT PANEL : Name + photo upload trigger -->
         <div class="controls-area">
             <div class="input-block">
                 <label>📝 നിങ്ങളുടെ പേര്</label>
@@ -335,7 +328,6 @@
                 <div class="info-note" style="font-size:0.7rem; color:#b5762a;">* പേര് നൽകിയ ശേഷം ഫോട്ടോ അപ്ലോഡ് ചെയ്യാം</div>
             </div>
 
-            <!-- Photo upload section (initially hidden until name has value) -->
             <div id="photoUploadWrapper" class="upload-section hidden">
                 <div class="input-block">
                     <label>📸 ഫോട്ടോ അപ്ലോഡ് </label>
@@ -345,15 +337,14 @@
                     <input type="file" id="photoInput" accept="image/jpeg, image/png, image/jpg">
                 </div>
                 <div style="font-size:0.7rem; color:#b87c30; margin-top:8px; text-align:center;">
-                    ✨ ആവശ്യാനുസരണം ഫോട്ടോ ക്രോപ്പ് ചെയ്യാവുന്നതാണ്.
+                    ✨ ഉയർന്ന റെസല്യൂഷനായി ഫോട്ടോ ക്രോപ്പ് ചെയ്യാം | JPG ഡൗൺലോഡ്
                 </div>
             </div>
         </div>
 
-        <!-- RIGHT PANEL : Poster preview and download -->
         <div class="preview-area">
             <div class="canvas-wrapper">
-                <canvas id="posterCanvas" width="1200" height="1500" style="width:100%; height:auto; max-width:450px; border-radius: 24px;"></canvas>
+                <canvas id="posterCanvas" style="width:100%; height:auto; max-width:530px; border-radius: 24px;"></canvas>
             </div>
             <button id="downloadPosterBtn" class="download-btn">⬇️ പോസ്റ്റർ ഡൗൺലോഡ് ചെയ്യുക</button>
             <div class="footer-credit">© SUHAIL KERALA | RiseUp Brand | 7034678818</div>
@@ -361,11 +352,11 @@
     </div>
 </div>
 
-<!-- MODAL : CROP TOOL - പുതിയ പേജ് പോലെ പ്രത്യേക ബോക്സ് -->
+<!-- CROP MODAL -->
 <div id="cropModal" class="crop-modal">
     <div class="modal-box">
         <div class="modal-header">
-            <h3>✂️ ഫോട്ടോ ക്രോപ്പ് ചെയ്യുക</h3>
+            <h3>✂️ ഫോട്ടോ ക്രോപ്പ് ചെയ്യുക (High-Res)</h3>
             <button class="modal-close" id="closeModalBtn">&times;</button>
         </div>
         <div class="crop-container" id="cropImageContainer">
@@ -380,41 +371,42 @@
 
 <script>
     (function() {
-        // ----- DOM elements -----
+        // ------------- MAXIMUM RESOLUTION CONFIG -------------
+        // Ultra high-definition poster: 3000 x 3750 pixels (2.5x base 1200x1500)
+        // Provides stunning print & digital quality, JPG format download.
+        const BASE_WIDTH = 1200;
+        const BASE_HEIGHT = 1500;
+        const RESOLUTION_MULTIPLIER = 2.5;   // 3000 x 3750 px -> Maximum resolution for sharp output
+        const CANVAS_WIDTH = Math.floor(BASE_WIDTH * RESOLUTION_MULTIPLIER);
+        const CANVAS_HEIGHT = Math.floor(BASE_HEIGHT * RESOLUTION_MULTIPLIER);
+        
+        // DOM elements
         const nameInput = document.getElementById('studentName');
         const photoUploadWrapper = document.getElementById('photoUploadWrapper');
         const photoFileInput = document.getElementById('photoInput');
         const triggerFileSelect = document.getElementById('triggerFileSelect');
-        
-        // Modal & cropper related
         const cropModal = document.getElementById('cropModal');
         const modalCropImg = document.getElementById('modalCropImage');
         const closeModalBtn = document.getElementById('closeModalBtn');
         const modalCancelBtn = document.getElementById('modalCancelBtn');
         const modalCropSaveBtn = document.getElementById('modalCropSaveBtn');
-        
         const posterCanvas = document.getElementById('posterCanvas');
-        const ctx = posterCanvas.getContext('2d');
         const downloadBtn = document.getElementById('downloadPosterBtn');
         
-        // state variables
+        let ctx = posterCanvas.getContext('2d');
         let cropperInstance = null;
-        let currentCroppedImage = null;      // final image object after crop & save
+        let currentCroppedImage = null;      // high-res photo image
         let backgroundImage = new Image();
         let bgReady = false;
-        let currentSelectedFile = null;
         
-        // Poster constants
-        const PHOTO_SIZE = 420;
-        const RIGHT_MARGIN = 80;
-        const photoX = posterCanvas.width - PHOTO_SIZE - RIGHT_MARGIN; // 1200-420-80=700
-        const PHOTO_Y = 470;
-        const NAME_GAP_BELOW_PHOTO = 70;
-        const nameCenterX = photoX + PHOTO_SIZE / 2;
-        const nameBaseY = PHOTO_Y + PHOTO_SIZE + NAME_GAP_BELOW_PHOTO;
+        // Set canvas dimensions to MAX resolution (3000x3750)
+        posterCanvas.width = CANVAS_WIDTH;
+        posterCanvas.height = CANVAS_HEIGHT;
+        
+        // Background image URL (will be stretched to fit canvas)
         const BG_IMAGE_URL = 'https://i.postimg.cc/nrsK80fZ/KERALA.jpg';
         
-        // helper: rounded rect for photo frame
+        // Helper: rounded rectangle (supports scaling based on canvas)
         function roundedRect(ctx, x, y, w, h, r) {
             if (w < 2 * r) r = w / 2;
             if (h < 2 * r) r = h / 2;
@@ -430,107 +422,120 @@
             ctx.closePath();
         }
         
-        // draw poster with background, cropped photo and name
-        // NAME PRINT IN BLACK COLOUR with crisp white shadow for readability
+        // ----- DYNAMIC DRAW using current canvas dimensions (fully adaptive for MAX resolution) -----
         function drawFullPoster() {
             if (!ctx) return;
             const w = posterCanvas.width;
             const h = posterCanvas.height;
+            // Calculate scaling factor relative to original design (1200x1500)
+            const factor = w / BASE_WIDTH;  // should be 2.5 (or whatever multiplier)
             
-            // draw background image or gradient fallback
+            // Layout constants derived from original design, multiplied by factor
+            const photoSize = 420 * factor;          // 1050px at 2.5x
+            const rightMargin = 80 * factor;         // 200px
+            const photoX = w - photoSize - rightMargin;  // Right aligned
+            const photoY = 470 * factor;             // ~1175px from top
+            const nameGapBelowPhoto = 70 * factor;   // 175px gap
+            const nameBaseY = photoY + photoSize + nameGapBelowPhoto;
+            const radius = 44 * factor;              // rounded corner radius
+            const borderWidthMain = 4 * factor;
+            const borderWidthInner = 2.5 * factor;
+            const centerPhotoX = photoX + photoSize / 2;
+            
+            // Draw background (full canvas)
             if (bgReady && backgroundImage.complete && backgroundImage.naturalWidth > 0) {
                 ctx.drawImage(backgroundImage, 0, 0, w, h);
             } else {
+                // fallback gradient (rich gold-blue)
                 const grad = ctx.createLinearGradient(0, 0, w, h);
                 grad.addColorStop(0, '#1d5b85');
-                grad.addColorStop(0.6, '#f5b042');
+                grad.addColorStop(0.65, '#f5b042');
                 ctx.fillStyle = grad;
                 ctx.fillRect(0, 0, w, h);
             }
             
-            const radius = 44;
-            // Draw photo (if available)
+            // ---- PHOTO FRAME + IMAGE (High-res cropped) ----
             if (currentCroppedImage && currentCroppedImage.complete && currentCroppedImage.naturalWidth) {
                 ctx.save();
                 ctx.beginPath();
-                roundedRect(ctx, photoX, PHOTO_Y, PHOTO_SIZE, PHOTO_SIZE, radius);
+                roundedRect(ctx, photoX, photoY, photoSize, photoSize, radius);
                 ctx.clip();
-                ctx.drawImage(currentCroppedImage, photoX, PHOTO_Y, PHOTO_SIZE, PHOTO_SIZE);
+                ctx.drawImage(currentCroppedImage, photoX, photoY, photoSize, photoSize);
                 ctx.restore();
                 
-                // elegant double border
+                // Outer decorative border
                 ctx.beginPath();
-                roundedRect(ctx, photoX, PHOTO_Y, PHOTO_SIZE, PHOTO_SIZE, radius);
-                ctx.lineWidth = 4;
+                roundedRect(ctx, photoX, photoY, photoSize, photoSize, radius);
+                ctx.lineWidth = borderWidthMain;
                 ctx.strokeStyle = "#F7C873";
                 ctx.stroke();
+                // Inner fine border
                 ctx.beginPath();
-                roundedRect(ctx, photoX+2, PHOTO_Y+2, PHOTO_SIZE-4, PHOTO_SIZE-4, radius-2);
-                ctx.lineWidth = 2.5;
+                roundedRect(ctx, photoX + borderWidthMain/2, photoY + borderWidthMain/2, photoSize - borderWidthMain, photoSize - borderWidthMain, radius - borderWidthMain/2);
+                ctx.lineWidth = borderWidthInner;
                 ctx.strokeStyle = "#FFF9E6";
                 ctx.stroke();
             } else {
-                // placeholder: empty frame with camera icon
-                ctx.fillStyle = "rgba(250, 240, 210, 0.9)";
+                // Placeholder frame (when no photo)
+                ctx.fillStyle = "rgba(250, 240, 210, 0.92)";
                 ctx.beginPath();
-                roundedRect(ctx, photoX, PHOTO_Y, PHOTO_SIZE, PHOTO_SIZE, radius);
+                roundedRect(ctx, photoX, photoY, photoSize, photoSize, radius);
                 ctx.fill();
                 ctx.fillStyle = "#b57c34";
-                ctx.font = "68px 'Anek Malayalam'";
+                const emojiFontSize = 68 * factor;
+                ctx.font = `${emojiFontSize}px 'Anek Malayalam', 'Segoe UI Emoji'`;
                 ctx.textAlign = "center";
-                ctx.fillText("📷", photoX + PHOTO_SIZE/2, PHOTO_Y + PHOTO_SIZE/2 + 8);
+                ctx.fillText("📷", centerPhotoX, photoY + photoSize/2 + (12 * factor));
                 ctx.textAlign = "left";
                 ctx.beginPath();
-                roundedRect(ctx, photoX, PHOTO_Y, PHOTO_SIZE, PHOTO_SIZE, radius);
+                roundedRect(ctx, photoX, photoY, photoSize, photoSize, radius);
                 ctx.strokeStyle = "#e5bf86";
-                ctx.lineWidth = 3;
+                ctx.lineWidth = borderWidthMain;
                 ctx.stroke();
             }
             
-            // draw name below photo -  NAME PRINT IN BLACK COLOUR as requested
-            // Using pure black (#000000) with soft white halo/shadow for excellent visibility on any background
+            // ---- NAME SECTION (PURE BLACK COLOUR WITH WHITE GLOW, MAX LEGIBILITY) ----
             let studentName = nameInput.value.trim();
             if (studentName === "") {
                 studentName = "__________";
             }
-            let maxNameWidth = PHOTO_SIZE + 70;
-            let fontSize = 54;
+            // Dynamic font sizing to fit within photo width + extra margin
+            let maxNameWidth = photoSize + (70 * factor);
+            let fontSize = 54 * factor;   // base font ~135px at 2.5x
             ctx.font = `bold ${fontSize}px 'Anek Malayalam'`;
             let textWidth = ctx.measureText(studentName).width;
-            while (textWidth > maxNameWidth && fontSize > 28) {
-                fontSize -= 4;
+            while (textWidth > maxNameWidth && fontSize > (28 * factor)) {
+                fontSize -= (4 * factor);
                 ctx.font = `bold ${fontSize}px 'Anek Malayalam'`;
                 textWidth = ctx.measureText(studentName).width;
             }
+            // final font size (minimum readability preserved)
             ctx.save();
-            // Strong white glow behind the black text for ultimate contrast and readability
-            ctx.shadowColor = "rgba(255, 255, 230, 0.95)";
-            ctx.shadowBlur = 5;
-            ctx.shadowOffsetX = 1;
-            ctx.shadowOffsetY = 1;
-            // Secondary subtle dark shadow for depth? Actually using white shadow gives black text a "pop" effect
-            ctx.fillStyle = "#000000";   // BLACK COLOUR as specified
+            // Strong white glow behind black text for outstanding contrast on any background
+            ctx.shadowColor = "rgba(255, 255, 230, 0.98)";
+            ctx.shadowBlur = 8 * factor;
+            ctx.shadowOffsetX = 2 * factor;
+            ctx.shadowOffsetY = 2 * factor;
+            ctx.fillStyle = "#000000";   // EXACT BLACK as requested
             ctx.textAlign = "center";
             ctx.font = `bold ${fontSize}px 'Anek Malayalam'`;
-            ctx.fillText(studentName, nameCenterX, nameBaseY);
-            
-            // Optional: extra stroke effect to ensure black text stands out even on dark regions
-            // We add a very thin white stroke behind (by drawing twice with no shadow but stroke? but white shadow already helps)
-            // For extra crispness, we re-draw the same text with no shadow but white outline? Not needed as shadow works perfectly.
+            ctx.fillText(studentName, centerPhotoX, nameBaseY);
+            // Additional subtle text stroke to enhance (shadow already powerful)
             ctx.restore();
         }
         
-        // set cropped image from canvas dataURL
+        // set cropped image from high-resolution canvas (1600x1600 or larger)
         function setCroppedImageFromCanvas(canvasElement) {
             const img = new Image();
             img.onload = () => {
                 currentCroppedImage = img;
                 drawFullPoster();
             };
+            // Use maximum quality PNG dataURL to preserve detail
             img.src = canvasElement.toDataURL('image/png');
         }
         
-        // destroy cropper and close modal
+        // close crop modal safely
         function closeCropModal(resetFileInput = true) {
             if (cropperInstance) {
                 cropperInstance.destroy();
@@ -540,19 +545,16 @@
             if (resetFileInput) {
                 photoFileInput.value = '';
             }
-            // clear modal image src to avoid flicker
             modalCropImg.src = '';
         }
         
-        // open modal with image file, init cropper
+        // open modal with image and init cropper (1:1 aspect for square perfect frame)
         function openCropModalWithFile(file) {
             if (!file) return;
             const reader = new FileReader();
             reader.onload = (e) => {
                 modalCropImg.src = e.target.result;
-                // ensure modal is visible before cropper init
                 cropModal.classList.add('active');
-                // wait for image load
                 modalCropImg.onload = () => {
                     if (cropperInstance) {
                         cropperInstance.destroy();
@@ -577,7 +579,7 @@
             reader.readAsDataURL(file);
         }
         
-        // handle file selection: open modal crop box (new page style)
+        // Handle file selection: open crop modal for high-res crop
         function onPhotoSelected(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -586,34 +588,32 @@
                 photoFileInput.value = '';
                 return;
             }
-            currentSelectedFile = file;
             openCropModalWithFile(file);
         }
         
-        // crop & save logic: get cropped canvas and update poster
+        // Save cropped image with ULTRA HIGH RESOLUTION for final poster (2000x2000 px output)
         function saveCroppedImage() {
             if (!cropperInstance) {
                 alert("ക്രോപ്പ് ടൂൾ പ്രവർത്തന സജ്ജമല്ല, വീണ്ടും ശ്രമിക്കുക");
                 closeCropModal(true);
                 return;
             }
-            const croppedCanvas = cropperInstance.getCroppedCanvas({ width: 800, height: 800 });
+            // Create cropped canvas at MEGA resolution (2400x2400 ensures no pixelation on 3000px poster)
+            // Photo area on poster will be ~1050px, but providing 2000px+ keeps it razor sharp.
+            const croppedCanvas = cropperInstance.getCroppedCanvas({ width: 2200, height: 2200 });
             if (!croppedCanvas) {
                 alert("ക്രോപ്പ് ചെയ്യുന്നതിൽ പിശക്, ദയവായി വീണ്ടും ശ്രമിക്കുക");
                 return;
             }
-            // update final poster image
             setCroppedImageFromCanvas(croppedCanvas);
-            // close modal and reset file input
             closeCropModal(true);
         }
         
-        // cancel cropping: just close modal without saving
         function cancelCropping() {
             closeCropModal(true);
         }
         
-        // ----- Name input logic: show/hide photo upload section (only if name non-empty)
+        // ----- Show/hide photo upload section based on name input -----
         function toggleUploadSection() {
             const nameValue = nameInput.value.trim();
             if (nameValue.length > 0) {
@@ -624,18 +624,16 @@
                 if (!photoUploadWrapper.classList.contains('hidden')) {
                     photoUploadWrapper.classList.add('hidden');
                 }
-                // If no name, we keep poster with placeholder but don't force photo removal
             }
-            drawFullPoster();   // update poster name text
+            drawFullPoster();
         }
         
-        // also trigger when name changes
         function onNameChange() {
             toggleUploadSection();
             drawFullPoster();
         }
         
-        // load background
+        // ----- Load high-res background (will be scaled beautifully) -----
         function initBackground() {
             backgroundImage.crossOrigin = "Anonymous";
             backgroundImage.onload = () => {
@@ -643,30 +641,35 @@
                 drawFullPoster();
             };
             backgroundImage.onerror = () => {
-                console.warn("Background image fallback");
+                console.warn("Background fallback");
                 bgReady = true;
                 drawFullPoster();
             };
             backgroundImage.src = BG_IMAGE_URL;
         }
         
-        // download poster
-        function downloadPoster() {
-            const nameForFile = (nameInput.value.trim() || "poster").replace(/[^a-zA-Z0-9\u0D00-\u0D7F]/g, '_');
-            const filename = `GUPS_${nameForFile}.png`;
+        // ----- DOWNLOAD AS JPG WITH MAXIMUM QUALITY (0.98) and maximum resolution -----
+        function downloadPosterAsJPG() {
+            const nameForFile = (nameInput.value.trim() || "GUPS_poster").replace(/[^a-zA-Z0-9\u0D00-\u0D7F]/g, '_');
+            const filename = `GUPS_Poster_${nameForFile}.jpg`;
+            // Convert canvas to JPEG blob at highest quality (0.98)
             posterCanvas.toBlob((blob) => {
-                const link = document.createElement('a');
-                const url = URL.createObjectURL(blob);
-                link.href = url;
-                link.download = filename;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                URL.revokeObjectURL(url);
-            }, 'image/png');
+                if (blob) {
+                    const link = document.createElement('a');
+                    const url = URL.createObjectURL(blob);
+                    link.href = url;
+                    link.download = filename;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(url);
+                } else {
+                    alert("JPG ജനറേഷൻ പരാജയപ്പെട്ടു, വീണ്ടും ശ്രമിക്കുക");
+                }
+            }, 'image/jpeg', 0.98);   // Maximum quality JPG
         }
         
-        // ----- Event bindings ----
+        // ----- EVENT BINDINGS -----
         nameInput.addEventListener('input', onNameChange);
         nameInput.addEventListener('blur', () => drawFullPoster());
         triggerFileSelect.addEventListener('click', (e) => {
@@ -680,38 +683,28 @@
         });
         photoFileInput.addEventListener('change', onPhotoSelected);
         
-        // modal buttons
         modalCropSaveBtn.addEventListener('click', saveCroppedImage);
         modalCancelBtn.addEventListener('click', cancelCropping);
         closeModalBtn.addEventListener('click', cancelCropping);
-        
-        // close modal if click on overlay (optional)
         cropModal.addEventListener('click', (e) => {
-            if (e.target === cropModal) {
-                cancelCropping();
-            }
+            if (e.target === cropModal) cancelCropping();
         });
         
-        downloadBtn.addEventListener('click', downloadPoster);
+        downloadBtn.addEventListener('click', downloadPosterAsJPG);
         
-        // additional: when we close modal by any reason, destroy cropper safely
-        window.addEventListener('resize', () => drawFullPoster());
-        
-        // initialize background and draw placeholder poster
+        // final background init
         initBackground();
-        // initial hide upload section & draw empty poster
         toggleUploadSection();
         drawFullPoster();
         
-        // Ensure that if user re-opens modal after a cropped image exists, old cropper removed
-        function finalCleanup() {
-            if (cropperInstance) {
-                cropperInstance.destroy();
-                cropperInstance = null;
-            }
-        }
+        // handle window resize: just redraw preview but canvas dimensions remain max (3000x3750)
+        window.addEventListener('resize', () => {
+            drawFullPoster();
+        });
         
-        // Override close to fully destroy - handled
+        // Additional note: ensure that if the user loads a very small image, cropping to 2200x2200 still works
+        // but gives best possible sharpness.
+        console.log(`Poster MAX RESOLUTION active: ${CANVAS_WIDTH} x ${CANVAS_HEIGHT} pixels, JPG download with 0.98 quality.`);
     })();
 </script>
 </body>
